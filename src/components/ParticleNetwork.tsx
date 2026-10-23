@@ -4,7 +4,14 @@ import { useRef, useMemo, useEffect } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 
-function Particles({ count = 200, mouseRef }: { count: number, mouseRef: React.MutableRefObject<any> }) {
+interface MouseState {
+  x: number;
+  y: number;
+  down: boolean;
+  clickPulse: number;
+}
+
+function Particles({ count = 200, mouseRef }: { count: number, mouseRef: React.MutableRefObject<MouseState> }) {
   const mesh = useRef<THREE.InstancedMesh>(null);
   const dummy = useMemo(() => new THREE.Object3D(), []);
   const { viewport } = useThree();
@@ -49,9 +56,7 @@ function Particles({ count = 200, mouseRef }: { count: number, mouseRef: React.M
       
       // Update base drifting time
       t = particle.t += speed / 2;
-      const a = Math.cos(t) + Math.sin(t * 1) / 10;
-      const b = Math.sin(t) + Math.cos(t * 2) / 10;
-      
+
       // Base positions (drifting)
       const baseX = xFactor + Math.cos((t / 10) * factor) + (Math.sin(t * 1) * factor) / 10;
       const baseY = yFactor + Math.sin((t / 10) * factor) + (Math.cos(t * 2) * factor) / 10;
@@ -131,7 +136,7 @@ function Particles({ count = 200, mouseRef }: { count: number, mouseRef: React.M
   }, [count]);
 
   return (
-    <instancedMesh ref={mesh} args={[undefined as any, undefined as any, count]}>
+    <instancedMesh ref={mesh} args={[undefined as unknown as THREE.BufferGeometry, undefined as unknown as THREE.Material, count]}>
       <sphereGeometry args={[0.25, 16, 16]} />
       <meshBasicMaterial transparent opacity={0.8} />
     </instancedMesh>

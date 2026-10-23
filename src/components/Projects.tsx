@@ -1,4 +1,4 @@
-import { FolderGit2, ShieldAlert, FileText, ChevronRight, Bug, Terminal } from "lucide-react";
+import { FolderGit2, ShieldAlert, ChevronRight, Bug, Terminal } from "lucide-react";
 import { Card } from "./ui/card";
 import { Button } from "./ui/button";
 

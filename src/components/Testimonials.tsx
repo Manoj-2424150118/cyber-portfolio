@@ -229,7 +229,7 @@ export function Testimonials() {
                       ))}
                     </div>
                   </div>
-                  <p className="text-gray-300 italic">"{review.content}"</p>
+                  <p className="text-gray-300 italic">&quot;{review.content}&quot;</p>
                   <div className="mt-4 pt-4 border-t border-white/10 flex justify-between items-center text-xs font-mono text-soc-success/50">
                     <div className="space-x-4">
                       <span>ID: {(review.id || 'TEMP').toString().substring(0, 8)}</span>

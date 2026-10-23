@@ -31,7 +31,7 @@ export function Contact() {
       } else {
         setStatus("error");
       }
-    } catch (err) {
+    } catch {
       setStatus("error");
     } finally {
       setIsSubmitting(false);

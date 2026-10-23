@@ -1,12 +1,12 @@
 "use client";
 import { useState, useEffect, Fragment } from "react";
-import { MapContainer, TileLayer, Polyline, Marker, useMap } from "react-leaflet";
+import { MapContainer, TileLayer, Polyline, Marker } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import { Layers } from "lucide-react";
 
 // Fix Leaflet's default icon path issues in Next.js
-delete (L.Icon.Default.prototype as any)._getIconUrl;
+delete (L.Icon.Default.prototype as unknown as { _getIconUrl?: unknown })._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
   iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
@@ -29,9 +29,20 @@ const createIpMarker = (ip: string, color: string) => {
   });
 };
 
+interface Attack {
+  id: number;
+  src: [number, number];
+  dst: [number, number];
+  srcIp: string;
+  dstIp: string;
+  color: string;
+  type: string;
+  severity: string;
+}
+
 export default function MapInner() {
   const [mapType, setMapType] = useState<"geeky" | "satellite">("geeky");
-  const [attacks, setAttacks] = useState<any[]>([]);
+  const [attacks, setAttacks] = useState<Attack[]>([]);
 
   useEffect(() => {
     // Generate random projectile attacks

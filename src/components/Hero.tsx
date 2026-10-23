@@ -6,9 +6,15 @@ import { ShieldAlert, Crosshair, Download, Calendar } from "lucide-react";
 import { motion } from "framer-motion";
 import { WorldMap } from "./WorldMap";
 
+interface ThreatItem {
+  title: string;
+  link: string;
+  pubDate: string;
+}
+
 export function Hero() {
   const [typedText, setTypedText] = useState("");
-  const [threats, setThreats] = useState<any[]>([]);
+  const [threats, setThreats] = useState<ThreatItem[]>([]);
   const fullText = "Defending Digital Infrastructure Before Threats Become Breaches.";
 
   useEffect(() => {

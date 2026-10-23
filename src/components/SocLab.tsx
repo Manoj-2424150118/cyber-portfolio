@@ -33,9 +33,32 @@ const INCIDENT_STAGES = [
 const generatePublicIP = () => `${Math.floor(Math.random() * (200 - 8 + 1)) + 8}.${Math.floor(Math.random() * 255)}.${Math.floor(Math.random() * 255)}.${Math.floor(Math.random() * 254) + 1}`;
 const generateInternalIP = () => `10.0.${Math.floor(Math.random() * 20)}.${Math.floor(Math.random() * 254) + 1}`;
 
+interface SocLog {
+  id: number;
+  time: string;
+  src: string;
+  dest: string;
+  event: string;
+  severity: string;
+}
+
+interface TrafficPoint {
+  time: string;
+  traffic: number;
+  anomalies: number;
+}
+
+interface SocThreatDetail {
+  id: number;
+  srcIp: string;
+  dstIp: string;
+  type: string;
+  severity: string;
+}
+
 export function SocLab() {
-  const [logs, setLogs] = useState<any[]>([]);
-  const [trafficData, setTrafficData] = useState<any[]>([]);
+  const [logs, setLogs] = useState<SocLog[]>([]);
+  const [trafficData, setTrafficData] = useState<TrafficPoint[]>([]);
   const [incidentStage, setIncidentStage] = useState(0);
   const [sensorStatus, setSensorStatus] = useState({ core: 'ONLINE', log: 'ONLINE', edge: 'ONLINE' });
   const [incidentId, setIncidentId] = useState("INC-2026-089");
@@ -68,8 +91,8 @@ export function SocLab() {
 
   // Live Logs listener from Hero Map (SOC_COMMAND_CENTER_v2.1)
   useEffect(() => {
-    const handleNewThreat = (e: any) => {
-      const attack = e.detail;
+    const handleNewThreat = (e: Event) => {
+      const attack = (e as CustomEvent<SocThreatDetail>).detail;
       const timeStr = new Date(attack.id).toLocaleTimeString('en-IN', { timeZone: 'Asia/Kolkata', hour12: false });
       
       const newLog = {
